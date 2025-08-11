@@ -1,10 +1,6 @@
 name: Lint
 
 on:
-  push:
-    # Runs on push to any branch
-    branches:
-      - "**"
   pull_request:
     # Runs on PRs targeting main
     branches:
@@ -27,4 +23,4 @@ jobs:
         run: npm ci
 
       - name: Run ESLint
-        run: npm run lint
+        run: npm lint
