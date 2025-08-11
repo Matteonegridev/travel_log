@@ -16,5 +16,5 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 23.x
-      - run: npm ci
+      - run: npm run install
       - run: npm run lint
