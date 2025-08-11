@@ -18,9 +18,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 23.x
+          cache: npm
 
       - name: Install dependencies
         run: npm ci
+
+        # Nuxt 3 specific: Generate types before linting
+      - name: Generate Nuxt types
+        run: npm run postinstall
 
       - name: Run ESLint
         run: npm run lint
