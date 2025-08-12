@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="mt-6 flex">
+    <div class="">
       <button class="btn btn-primary">
         <span>
           <Icon
