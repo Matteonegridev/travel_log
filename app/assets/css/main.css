@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+/* this is for prefers-scheme-color */
+@plugin "daisyui" {
+  themes:
+    light --default,
+    dark --prefersdark;
+}
