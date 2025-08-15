@@ -7,8 +7,8 @@ on:
       - main
 
 jobs:
-  lint:
-
+  build:
+    name: lint
     runs-on: ubuntu-latest
     environment: Build
     env:
