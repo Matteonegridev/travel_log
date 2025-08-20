@@ -32,12 +32,25 @@ const props = defineProps<Props>();
     </div>
     <ul
       tabindex="0"
-      class="dropdown-content menu bg-base-100 rounded-box z-1 w-36 p-2 shadow-sm"
+      class="dropdown-content menu bg-base-100 rounded-box  z-1 w-36 p-2 shadow-sm "
     >
       <li>
         <NuxtLink
+          to="/dashboard"
+          class="flex justify-around"
+        >
+          <Icon
+            name="tabler:clipboard-list"
+            size="22"
+          />
+
+          Dashboard
+        </NuxtLink>
+      </li>
+      <li>
+        <NuxtLink
           to="/sign-out"
-          class="text-center"
+          class="flex justify-around"
         >
           <Icon
             name="tabler:logout"
