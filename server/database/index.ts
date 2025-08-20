@@ -6,7 +6,7 @@ import * as schema from "./schema";
 // You can specify any property from the libsql connection options
 const db = drizzle({
   connection: {
-    url: env.TURSO_DATABASE_URL,
+    url: env.NODE_ENV === "development" ? env.TURSO_DATABASE_URL : env.TURSO_DATABASE_URL_PROD,
     // run whn not in development:
     authToken: env.NODE_ENV === "development" ? undefined : env.TURSO_AUTH_TOKEN,
   },

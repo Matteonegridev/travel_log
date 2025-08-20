@@ -1,16 +1,22 @@
 <script setup lang="ts">
-const { loading, signIn } = useAuthSignInStore();
+const authStore = useAuthStore();
 </script>
 
 <template>
+  <UiDropdown
+    v-if="!authStore.loading && authStore.user"
+    :name="authStore.user.name"
+    :image="authStore.user?.image"
+  />
   <button
-    :disabled="loading"
+    v-else
+    :disabled="authStore.loading"
     class="btn btn-accent"
-    @click="signIn"
+    @click="authStore.signIn"
   >
     Sign In With GitHub
     <span
-      v-if="loading"
+      v-if="authStore.loading"
       class="loading loading-spinner loading-md"
     />
     <Icon
