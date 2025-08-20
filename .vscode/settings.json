@@ -51,5 +51,14 @@
     "scss",
     "pcss",
     "postcss"
+  ],
+  "a-file-icon-vscode.folderTheme": "classic",
+  "a-file-icon-vscode.activeIconPacks": [
+    "angular",
+    "next",
+    "react",
+    "redux",
+    "vue",
+    "rails"
   ]
 }
