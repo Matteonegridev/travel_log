@@ -60,5 +60,6 @@
     "redux",
     "vue",
     "rails"
-  ]
+  ],
+  "workbench.colorTheme": "Nord Light"
 }
