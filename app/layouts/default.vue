@@ -4,9 +4,9 @@ await authStore.init();
 </script>
 
 <template>
-  <div class="flex min-h-screen flex-col">
+  <div class="flex min-h-screen flex-col ">
     <UiNavbar />
-    <main>
+    <main class="flex flex-1 flex-col">
       <slot />
     </main>
   </div>
