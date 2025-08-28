@@ -1,3 +1,3 @@
 <template>
-  <h1>you are loggedin!</h1>
+  <h1>main page dashboard </h1>
 </template>

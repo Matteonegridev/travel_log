@@ -11,6 +11,8 @@ export default defineNuxtConfig({
     "@nuxt/icon",
     "@nuxtjs/color-mode",
     "@pinia/nuxt",
+    "@vueuse/nuxt",
+    "motion-v/nuxt",
   ],
   css: ["~/assets/css/main.css"],
   eslint: {
@@ -29,4 +31,5 @@ export default defineNuxtConfig({
     storage: "sessionStorage",
     dataValue: "theme",
   },
+
 });
