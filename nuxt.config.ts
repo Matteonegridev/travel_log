@@ -13,6 +13,7 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@vueuse/nuxt",
     "motion-v/nuxt",
+    "@vee-validate/nuxt",
   ],
   css: ["~/assets/css/main.css"],
   eslint: {

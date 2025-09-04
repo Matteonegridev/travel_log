@@ -10,7 +10,7 @@ export const locationLog = sqliteTable("locationLog-table", {
   endedAt: int().notNull(),
   description: text(),
   lat: real().notNull(),
-  ling: real().notNull(),
+  long: real().notNull(),
   locationId: int().notNull().references(() => location.id),
   userId: int().notNull().references(() => user.id),
   createdAt: int().notNull().$default(() => Date.now()),

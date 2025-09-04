@@ -43,6 +43,7 @@ const rotateArrow = {
           style="display:inline-block; transform-origin:center;"
         >
           <Icon
+            class="cursor-pointer"
             name="tabler:chevron-left"
             size="42"
           />
