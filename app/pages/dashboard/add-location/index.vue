@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import type { FetchError } from "ofetch";
 
+import { toTypedSchema } from "@vee-validate/zod";
+import { formSchema } from "~~/server/database/schema";
+
 const router = useRouter();
 const submitError = ref("");
 
 const { handleSubmit, errors, meta, resetForm, setErrors } = useForm({
-  // validationSchema: toTypedSchema(formSchema),
+  validationSchema: toTypedSchema(formSchema),
 });
 
 const onSubmit = handleSubmit(async (values) => {
@@ -81,30 +84,30 @@ onBeforeRouteLeave(() => {
       @submit.prevent="onSubmit"
     >
       <util-form-field
-        :error="errors.name"
         html-tag="input"
+        :error="errors.name"
         name="name"
         label="Name"
       />
       <util-form-field
-        :error="errors.description"
         html-tag="textarea"
+        :error="errors.description"
         name="description"
         label="Description"
         type="textarea"
       />
 
       <util-form-field
-        :error="errors.lat"
         html-tag="input"
+        :error="errors.lat"
         name="lat"
         label="Latitude"
         type="number"
         placeholder="Must be between -90 an 90"
       />
       <util-form-field
-        :error="errors.long"
         html-tag="input"
+        :error="errors.long"
         name="long"
         label="Longitude"
         type="number"

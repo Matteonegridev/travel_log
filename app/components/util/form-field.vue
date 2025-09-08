@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import clsx from "clsx";
-import { Field } from "vee-validate";
+// import { Field } from "vee-validate";
 
 type InputProps = {
   name: string;
@@ -9,10 +9,10 @@ type InputProps = {
   placeholder?: string;
   type?: "text" | "number" | "textarea";
   htmlTag: "input" | "textarea";
-
 };
 
 const props = defineProps<InputProps>();
+const { value, errorMessage } = useField<string | number>(() => props.name);
 </script>
 
 <template>
@@ -20,28 +20,32 @@ const props = defineProps<InputProps>();
     <legend class="fieldset-legend">
       {{ props.label }}
     </legend>
-    <Field
-      v-slot="{ field, errorMessage }"
-      :name="props.name"
+
+    <input
+      v-if="props.htmlTag === 'input'"
+      v-model="value"
+      :type="props.type || 'text'"
+      :placeholder="props.placeholder"
+      :class="clsx(
+        'w-full input',
+        errorMessage && 'input-error',
+      )"
     >
-      <component
-        v-bind="field"
-        :is="props.htmlTag"
-        :type="props.type || 'text'"
-        :placeholder="props.placeholder"
-        :class="clsx(
-          'w-full',
-          props.htmlTag === 'textarea' ? 'textarea resize-none h-24' : 'input',
-          errorMessage && 'input-error',
-        )"
-      />
-      <ErrorMessage
-        :name="props.name"
-        as="p"
-        class="fieldset-label text-error"
-      >
-        {{ errorMessage }}
-      </ErrorMessage>
-    </Field>
+    <textarea
+      v-else
+      v-model="value"
+      :placeholder="props.placeholder"
+      :class="clsx(
+        'w-full textarea resize-none h-24',
+        errorMessage && 'input-error',
+      )"
+    />
+    <ErrorMessage
+      :name="props.name"
+      as="p"
+      class="fieldset-label text-error"
+    >
+      {{ errorMessage }}
+    </ErrorMessage>
   </fieldset>
 </template>
