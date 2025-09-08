@@ -3,9 +3,10 @@ import clsx from "clsx";
 
 type ButtonProps = {
   label: string;
-  type: "reset" | "submit";
+  type?: "reset" | "submit";
   buttonType?: "primary" | "outline";
   iconType: "add" | "reset";
+
 };
 
 const props = defineProps<ButtonProps>();
