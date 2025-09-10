@@ -16,11 +16,11 @@ const { handleSubmit, errors, meta, resetForm, setErrors } = useForm({
 const onSubmit = handleSubmit(async (values) => {
   try {
     loading.value = true;
-    const result = await $csrfFetch("/api/location", {
+    await $csrfFetch("/api/location", {
       method: "POST",
       body: values,
     });
-    console.log("sent to db:", result);
+
     resetForm();
     navigateTo("/dashboard");
   }
