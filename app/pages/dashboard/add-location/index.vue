@@ -10,7 +10,7 @@ const loading = ref(false);
 const { $csrfFetch } = useNuxtApp();
 
 const { handleSubmit, errors, meta, resetForm, setErrors } = useForm({
-  validationSchema: toTypedSchema(formSchema),
+  validationSchema: toTypedSchema(formSchema as any),
 });
 
 const onSubmit = handleSubmit(async (values) => {
