@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     "@vueuse/nuxt",
     "motion-v/nuxt",
     "@vee-validate/nuxt",
+    "nuxt-csurf",
   ],
   css: ["~/assets/css/main.css"],
   eslint: {

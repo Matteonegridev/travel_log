@@ -6,6 +6,8 @@ import { formSchema } from "~~/server/database/schema";
 
 const router = useRouter();
 const submitError = ref("");
+const loading = ref(false);
+const { $csrfFetch } = useNuxtApp();
 
 const { handleSubmit, errors, meta, resetForm, setErrors } = useForm({
   validationSchema: toTypedSchema(formSchema),
@@ -13,25 +15,31 @@ const { handleSubmit, errors, meta, resetForm, setErrors } = useForm({
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    await $fetch("/api/location", {
+    loading.value = true;
+    const result = await $csrfFetch("/api/location", {
       method: "POST",
       body: values,
     });
-
+    console.log("sent to db:", result);
     resetForm();
+    navigateTo("/dashboard");
   }
   catch (err) {
     const error = err as FetchError;
     // mostra il messaggio di errore preso dal backend:
-    setErrors(error.data?.data);
+    if (error.data?.data) {
+      setErrors(error.data?.data);
+    }
     submitError.value = error.statusMessage || "An unknown error occurred";
   }
+  loading.value = false;
 });
 
 function goBack() {
   router.back();
 }
 
+// this is needed when we try to leave the page and input are dirty:
 onBeforeRouteLeave(() => {
   if (meta.value.dirty) {
     // eslint-disable-next-line no-alert
@@ -84,12 +92,14 @@ onBeforeRouteLeave(() => {
       @submit.prevent="onSubmit"
     >
       <util-form-field
+        :disabled="loading"
         html-tag="input"
         :error="errors.name"
         name="name"
         label="Name"
       />
       <util-form-field
+        :disabled="loading"
         html-tag="textarea"
         :error="errors.description"
         name="description"
@@ -98,6 +108,7 @@ onBeforeRouteLeave(() => {
       />
 
       <util-form-field
+        :disabled="loading"
         html-tag="input"
         :error="errors.lat"
         name="lat"
@@ -106,6 +117,7 @@ onBeforeRouteLeave(() => {
         placeholder="Must be between -90 an 90"
       />
       <util-form-field
+        :disabled="loading"
         html-tag="input"
         :error="errors.long"
         name="long"
@@ -115,11 +127,13 @@ onBeforeRouteLeave(() => {
       />
       <div class="mt-4 flex justify-between">
         <util-form-button
+          :loading="loading"
           icon-type="reset"
           label="Cancel"
           @click="goBack"
         />
         <util-form-button
+          :loading="loading"
           icon-type="add"
           button-type="primary"
           label="Add"

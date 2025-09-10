@@ -14,15 +14,27 @@ export const useAuthStore = defineStore("authStore", () => {
   }
 
   async function signIn() {
+    // we need to access to the csfr token when sign in:
+    const { csrf } = useCsrf();
+    const headers = new Headers();
+    headers.append("csfr-token", csrf);
     await authClient.signIn.social({
       provider: "github",
       callbackURL: "/dashboard",
       errorCallbackURL: "/error",
+      fetchOptions: {
+        headers,
+      },
     });
   };
 
   async function signOut() {
-    await authClient.signOut();
+    const { csrf } = useCsrf();
+    const headers = new Headers();
+    headers.append("csfr-token", csrf);
+    await authClient.signOut({ fetchOptions: {
+      headers,
+    } });
     navigateTo("/");
   };
 

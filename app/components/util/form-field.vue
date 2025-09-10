@@ -9,6 +9,7 @@ type InputProps = {
   placeholder?: string;
   type?: "text" | "number" | "textarea";
   htmlTag: "input" | "textarea";
+  disabled: boolean;
 };
 
 const props = defineProps<InputProps>();
@@ -30,6 +31,8 @@ const { value, errorMessage } = useField<string | number>(() => props.name);
         'w-full input',
         errorMessage && 'input-error',
       )"
+      :disabled="props.disabled"
+      :step="props.type === 'number' ? 'any' : ''"
     >
     <textarea
       v-else
@@ -39,6 +42,7 @@ const { value, errorMessage } = useField<string | number>(() => props.name);
         'w-full textarea resize-none h-24',
         errorMessage && 'input-error',
       )"
+      :disabled="props.disabled"
     />
     <ErrorMessage
       :name="props.name"
