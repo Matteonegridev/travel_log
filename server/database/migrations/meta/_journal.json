@@ -15,6 +15,13 @@
       "when": 1755444617473,
       "tag": "0001_cultured_bedlam",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1757007759924,
+      "tag": "0002_ancient_miracleman",
+      "breakpoints": true
     }
   ]
 }
