@@ -1,3 +1,5 @@
+import type { z } from "better-auth";
+
 import { int, real, sqliteTable, text, unique } from "drizzle-orm/sqlite-core";
 import { createSelectSchema } from "drizzle-zod";
 
@@ -30,3 +32,5 @@ export const formSchema = createSelectSchema(location, {
   createdAt: true,
   updatedAt: true,
 });
+
+export type LocationSchemaValidation = z.infer<typeof formSchema>;

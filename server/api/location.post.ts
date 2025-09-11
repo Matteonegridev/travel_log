@@ -1,13 +1,9 @@
 import type { DrizzleError } from "drizzle-orm";
 
-import { and, eq } from "drizzle-orm";
-// import { customAlphabet } from "nanoid";
 import slugify from "slug";
 
-import db from "../database";
-import { formSchema, location } from "../database/schema";
-
-// const nanoid = customAlphabet("1234567890abcdefghijklmnopqrstuvwxyz", 5);
+import { findExistingLocation, getUniqueSlug, InsertDataIntoDB } from "../database/queries/location";
+import { formSchema } from "../database/schema";
 
 export default defineEventHandler(async (event) => {
   const result = await readValidatedBody(event, body => formSchema.safeParse(body));
@@ -34,14 +30,8 @@ export default defineEventHandler(async (event) => {
       data,
     }));
   }
-
-  const checkExistingLocation = await db.query.location.findFirst({
-    where:
-      and(
-        eq(location.name, result.data.name),
-        eq(location.userId, event.context.user.id),
-      ),
-  });
+  // createed function to find existing location:
+  const checkExistingLocation = await findExistingLocation(result.data, event.context.user.id);
 
   if (checkExistingLocation) {
     return sendError(event, createError({
@@ -50,32 +40,12 @@ export default defineEventHandler(async (event) => {
     }));
   }
 
-  // // create a random slug checking if it exists in the database:
-  // let slug = slugify(result.data.name);
-  // let existing = Boolean(await db.query.location.findFirst({
-  //   where: eq(location.slug, slug),
-  // }));
-
-  // while (existing) {
-  //   const id = nanoid();
-  //   const slugId = `${slug}-${id}`;
-  //   existing = Boolean(await db.query.location.findFirst({
-  //     where: eq(location.slug, slugId),
-  //   }));
-  //   if (!existing) {
-  //     slug = slugId;
-  //   }
-  // }
+  // created function to get unique slug:
+  const slug = await getUniqueSlug(slugify(result.data.name));
 
   try {
     // push data to db:
-    const [created] = await db.insert(location).values({
-      ...result.data,
-      slug: slugify(result.data.name),
-      userId: event.context.user.id,
-    }).returning();
-
-    return created;
+    return InsertDataIntoDB(result.data, slug, event.context.user.id);
   }
   catch (e) {
     const error = e as DrizzleError;
