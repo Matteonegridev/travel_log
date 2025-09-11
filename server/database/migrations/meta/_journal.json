@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1755268717019,
-      "tag": "0000_overjoyed_scarlet_witch",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1755444617473,
-      "tag": "0001_cultured_bedlam",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1757007759924,
-      "tag": "0002_ancient_miracleman",
+      "when": 1757593393666,
+      "tag": "0000_fine_penance",
       "breakpoints": true
     }
   ]

@@ -1,4 +1,4 @@
-import { int, real, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { int, real, sqliteTable, text, unique } from "drizzle-orm/sqlite-core";
 import { createSelectSchema } from "drizzle-zod";
 
 import { user } from "./auth-schema";
@@ -13,8 +13,9 @@ export const location = sqliteTable("location-table", {
   userId: int().notNull().references(() => user.id),
   createdAt: int().notNull().$default(() => Date.now()),
   updatedAt: int().notNull().$default(() => Date.now()).$onUpdate(() => Date.now()),
-
-});
+}, t => [
+  unique().on(t.name, t.userId),
+]);
 
 export const formSchema = createSelectSchema(location, {
   name: field => field.min(4, "Too Short!").max(100, "That's a bit excessive long").trim(),

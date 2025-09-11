@@ -1,5 +1,13 @@
+import type { DrizzleError } from "drizzle-orm";
+
+import { and, eq } from "drizzle-orm";
+// import { customAlphabet } from "nanoid";
+import slugify from "slug";
+
 import db from "../database";
 import { formSchema, location } from "../database/schema";
+
+// const nanoid = customAlphabet("1234567890abcdefghijklmnopqrstuvwxyz", 5);
 
 export default defineEventHandler(async (event) => {
   const result = await readValidatedBody(event, body => formSchema.safeParse(body));
@@ -27,12 +35,56 @@ export default defineEventHandler(async (event) => {
     }));
   }
 
-  // push data to db:
-  const [created] = await db.insert(location).values({
-    ...result.data,
-    slug: result.data.name.replaceAll(" ", "-").toLowerCase(),
-    userId: event.context.user.id,
-  }).returning();
+  const checkExistingLocation = await db.query.location.findFirst({
+    where:
+      and(
+        eq(location.name, result.data.name),
+        eq(location.userId, event.context.user.id),
+      ),
+  });
 
-  return created;
+  if (checkExistingLocation) {
+    return sendError(event, createError({
+      statusCode: 409,
+      statusMessage: "Location name already exists. Please use another name.",
+    }));
+  }
+
+  // // create a random slug checking if it exists in the database:
+  // let slug = slugify(result.data.name);
+  // let existing = Boolean(await db.query.location.findFirst({
+  //   where: eq(location.slug, slug),
+  // }));
+
+  // while (existing) {
+  //   const id = nanoid();
+  //   const slugId = `${slug}-${id}`;
+  //   existing = Boolean(await db.query.location.findFirst({
+  //     where: eq(location.slug, slugId),
+  //   }));
+  //   if (!existing) {
+  //     slug = slugId;
+  //   }
+  // }
+
+  try {
+    // push data to db:
+    const [created] = await db.insert(location).values({
+      ...result.data,
+      slug: slugify(result.data.name),
+      userId: event.context.user.id,
+    }).returning();
+
+    return created;
+  }
+  catch (e) {
+    const error = e as DrizzleError;
+    if (error.message) {
+      throw sendError(event, createError({
+        statusCode: 409,
+        statusMessage: "Slug must be unique (the location name is used to generate the slug) ",
+      }));
+    }
+    console.error(error.message);
+  }
 });
