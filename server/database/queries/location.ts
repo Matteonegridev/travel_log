@@ -23,7 +23,7 @@ async function findExistingSlug(slug: string) {
   });
 }
 
-export async function getUniqueSlug(slugName: string): Promise<string> {
+export async function getUniqueSlug(slugName: string) {
   let existing = !!(await findExistingSlug(slugName));
 
   while (existing) {

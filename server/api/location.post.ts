@@ -16,6 +16,7 @@ export default defineEventHandler(async (event) => {
     }));
   }
 
+  // if success = false diplay errors:
   if (!result.success) {
     const statusMessage = result.error.issues.map(err => `${err.path.join("")}: ${err.message}`).join("; ");
 

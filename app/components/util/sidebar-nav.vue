@@ -16,7 +16,7 @@ const props = defineProps<Props>();
       <UtilSidebarLink
         :is-open="props.isOpen"
         label="Location"
-        href="/dashboard/location"
+        href="/dashboard"
         icon="tabler:map-2"
       />
       <UtilSidebarLink
