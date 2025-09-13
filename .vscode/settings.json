@@ -60,6 +60,5 @@
     "redux",
     "vue",
     "rails"
-  ],
-  "workbench.colorTheme": "poimandres-storm"
+  ]
 }

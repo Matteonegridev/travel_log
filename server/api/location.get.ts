@@ -1,30 +1,32 @@
 import type { DrizzleError } from "drizzle-orm";
 
+import { eq } from "drizzle-orm";
+
 import db from "../database";
-// import { formSchema } from "../database/schema";
 import { location } from "../database/schema/index";
 
 export default defineEventHandler(async (event) => {
-  if (event.context.user) {
-    try {
-      const fetchFromDatabase = await db.select().from(location);
+  if (!event.context.user) {
+    return sendError(event, createError({
+      statusCode: 401,
+      statusMessage: "You are not logged in!",
+    }));
+  }
 
-      // const result = await getValidatedQuery(event, () => formSchema.safeParse(fetchFromDatabase));
+  try {
+    const fetchUserLocations = await db.query.location.findMany({
+      where: eq(location.userId, event.context.user.id),
+    });
 
-      if (!fetchFromDatabase) {
-        return sendError(event, createError({
-          statusCode: 404,
-          statusMessage: "impossible to get data",
-        }));
-      }
-
-      return fetchFromDatabase;
-
-      // return result.data;
-    }
-    catch (e) {
-      const error = e as DrizzleError;
-      console.log(error.message);
-    }
+    return fetchUserLocations;
+  }
+  catch (e) {
+    const error = e as DrizzleError;
+    // eslint-disable-next-line no-console
+    console.log(error.message);
+    return sendError(event, createError({
+      statusCode: 500,
+      statusMessage: "Database error",
+    }));
   }
 });

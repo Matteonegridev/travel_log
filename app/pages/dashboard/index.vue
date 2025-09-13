@@ -1,3 +1,10 @@
 <template>
-  <h1>main page dashboard </h1>
+  <div>
+    <h1 class="p-4 text-2xl">
+      Locations
+    </h1>
+    <div class="flex justify-center">
+      <util-display-locations />
+    </div>
+  </div>
 </template>
