@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h1 class="p-4 text-2xl">
+    <h1 class="block p-4 text-3xl font-medium">
       Locations
     </h1>
-    <div class="flex justify-center">
+    <div class="p-6">
       <util-display-locations />
     </div>
   </div>
