@@ -60,5 +60,7 @@
     "redux",
     "vue",
     "rails"
-  ]
+  ],
+
+  "workbench.colorTheme": "Monokai Pro Light (Filter Sun)"
 }
