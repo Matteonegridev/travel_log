@@ -1,20 +1,16 @@
-// stores/location.ts
 export const useLocationStore = defineStore("locationStore", () => {
-  const { data, pending, refresh } = useFetch("/api/location");
+  const { data, pending, refresh } = useLazyFetch("/api/location");
 
-  const sidebarItemsToWatch = computed(() =>
-    (data.value || []).map(location => ({
-      label: location.name,
-      icon: "tabler:map-pin-filled",
-      href: `/dashboard/location/${location.id}`,
-      id: `location-${location.id}`,
-    })),
+  const sidebarLinks = computed(() =>
+    (
+      data.value?.map(location => ({
+        label: location.name,
+        href: `location-${location.slug}`,
+        icon: "tabler:map-pin-filled",
+        id: location.id,
+      })) ?? []
+    ),
   );
 
-  return {
-    location: data,
-    pending,
-    refresh,
-    sidebarItemsToWatch,
-  };
+  return { location: data, pending, sidebarLinks, refresh };
 });

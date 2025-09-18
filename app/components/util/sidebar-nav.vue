@@ -2,10 +2,9 @@
 type Props = {
   isOpen: boolean;
 };
-
 const props = defineProps<Props>();
 const locationStore = useLocationStore();
-const { sidebarItemsToWatch, pending } = storeToRefs(locationStore);
+const { sidebarLinks, pending } = storeToRefs(locationStore);
 </script>
 
 <template>
@@ -27,22 +26,19 @@ const { sidebarItemsToWatch, pending } = storeToRefs(locationStore);
         href="/dashboard/add-location"
         icon="tabler:square-plus-2"
       />
-
       <div
-        v-if="sidebarItemsToWatch.length || pending"
+        v-if="sidebarLinks.length > 0"
         class="divider"
       />
-      <div
-        v-if="pending"
-      >
+      <div v-if="pending">
         <div class="skeleton h-8 w-full" />
       </div>
       <div
-        v-if="sidebarItemsToWatch.length && !pending"
-        class="flex flex-col gap-4"
+        v-if="sidebarLinks.length > 0 && !pending"
+        class="flex flex-col gap-2"
       >
         <UtilSidebarLink
-          v-for="value in sidebarItemsToWatch"
+          v-for="value in sidebarLinks"
           :key="value.id"
           :is-open="props.isOpen"
           :label="value.label"
