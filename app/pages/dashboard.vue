@@ -3,5 +3,6 @@
     name="dashboard"
   >
     <NuxtPage />
+    <UiMap />
   </NuxtLayout>
 </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-type LocationItem = {
+export type LocationItem = {
   id: number;
   name: string;
   createdAt: number;
