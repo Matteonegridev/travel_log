@@ -2,7 +2,9 @@
   <NuxtLayout
     name="dashboard"
   >
-    <NuxtPage />
-    <UiMap />
+    <div class="flex flex-col">
+      <NuxtPage class="flex-1" />
+      <UiMap class="shrink-0" />
+    </div>
   </NuxtLayout>
 </template>

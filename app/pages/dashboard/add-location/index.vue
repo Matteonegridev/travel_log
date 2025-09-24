@@ -8,6 +8,7 @@ const router = useRouter();
 const submitError = ref("");
 const loading = ref(false);
 const { $csrfFetch } = useNuxtApp();
+const locationStore = useLocationStore();
 
 const { handleSubmit, errors, meta, resetForm, setErrors } = useForm({
   validationSchema: toTypedSchema(formSchema as any),
@@ -20,7 +21,7 @@ const onSubmit = handleSubmit(async (values) => {
       method: "POST",
       body: values,
     });
-
+    locationStore.refresh();
     resetForm();
     navigateTo("/dashboard");
   }
@@ -53,7 +54,7 @@ onBeforeRouteLeave(() => {
 
 <template>
   <div
-    class="container mx-auto mt-4 max-w-md "
+    class="container mx-auto  mt-4 max-w-md "
   >
     <div class="mb-6 flex flex-col gap-4 ">
       <h1 class="text-xl">
