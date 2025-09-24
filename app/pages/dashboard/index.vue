@@ -26,7 +26,9 @@ onMounted(() => {
       </template>
       <!-- With data -->
       <template v-else-if="location && location.length > 0">
-        <util-display-locations :data="location" />
+        <util-display-locations
+          :data="location"
+        />
       </template>
 
       <!-- Without data -->
