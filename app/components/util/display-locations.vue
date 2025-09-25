@@ -16,7 +16,7 @@ const props = defineProps<{ data: LocationItem[] }>();
 
 <template>
   <div
-    class="grid cursor-pointer gap-3 max-sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+    class="grid gap-3  max-sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
   >
     <div
       v-for="value in props.data"

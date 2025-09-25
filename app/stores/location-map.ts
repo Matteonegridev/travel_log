@@ -2,7 +2,11 @@
 import type { MapPin } from "~~/server/types/map-types";
 
 export const useLocationStore = defineStore("locationStore", () => {
-  const { data, status, refresh } = useLazyFetch("/api/location");
+  const { data, status, refresh, pending } = useLazyFetch("/api/location", { default: () => [] });
+
+  const isLoading = computed(() => {
+    return status.value === "pending" || pending.value;
+  });
 
   const sidebarLinks = computed(() =>
     data.value?.map(location => ({
@@ -10,7 +14,7 @@ export const useLocationStore = defineStore("locationStore", () => {
       href: `location-${location.slug}`,
       icon: "tabler:map-pin-filled",
       id: location.id,
-    })) ?? [],
+    })),
   );
 
   const getCoordinates = computed<MapPin[]>(() => {
@@ -19,12 +23,12 @@ export const useLocationStore = defineStore("locationStore", () => {
       lat: value.lat,
       long: value.long,
       label: value.name,
-    })) ?? [];
+    }));
   });
 
   return {
     location: data,
-    status,
+    isLoading,
     sidebarLinks,
     refresh,
     getCoordinates,
