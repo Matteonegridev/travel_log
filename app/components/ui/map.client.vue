@@ -63,7 +63,7 @@ watch(
 .map-wrapper {
   height: 60dvh;
   width:100%;
-  padding: 1.2rem
+  padding-top: 1rem;
 
 }
 

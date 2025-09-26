@@ -3,10 +3,10 @@ type Props = {
   isOpen: boolean;
 };
 const props = defineProps<Props>();
-const linksStore = useLinksStore();
-const { sidebarLinks } = storeToRefs(linksStore);
 const locationStore = useLocationStore();
 const { status } = storeToRefs(locationStore);
+const linksStore = useLinksStore();
+const { sidebarLinks } = storeToRefs(linksStore);
 
 const showSkeleton = ref(true);
 
@@ -37,10 +37,10 @@ onMounted(() => {
         icon="tabler:square-plus-2"
       />
       <div
-        v-if="sidebarLinks.length || showSkeleton"
+        v-if=" sidebarLinks.length > 0"
         class="divider"
       />
-      <div v-if="showSkeleton">
+      <div v-if="showSkeleton && sidebarLinks.length > 0">
         <div class="skeleton h-11 w-full" />
       </div>
       <div

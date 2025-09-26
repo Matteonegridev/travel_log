@@ -1,8 +1,19 @@
 import type { Links } from "~~/server/types/map-types";
 
 export const useLinksStore = defineStore("linksStore", () => {
-  const sidebarLinks = ref<Links[]>([]);
-  const isLoading = ref(false);
+  const locationStore = useLocationStore();
+  const { location } = storeToRefs(locationStore);
 
-  return { sidebarLinks, isLoading };
+  const sidebarLinks = computed<Links[]>(() => {
+    return location?.value.map(location => ({
+      label: location.name,
+      href: `location-${location.slug}`,
+      icon: "tabler:map-pin-filled",
+      id: location.id,
+    }));
+  });
+
+  return {
+    sidebarLinks,
+  };
 });
