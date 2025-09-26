@@ -1,10 +1,10 @@
 <script setup lang="ts">
 const locationStore = useLocationStore();
-const { location, isLoading } = storeToRefs(locationStore);
+const { location, status } = storeToRefs(locationStore);
 
 const isHydrated = ref(false);
 const showLoading = computed(() => {
-  return !isHydrated.value || isLoading.value;
+  return !isHydrated.value || status.value === "pending";
 });
 
 onMounted(() => {

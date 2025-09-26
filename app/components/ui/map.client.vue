@@ -4,8 +4,8 @@ import {
 } from "@indoorequal/vue-maplibre-gl";
 import clsx from "clsx";
 
-const locationStore = useLocationStore();
-const { getCoordinates } = storeToRefs(locationStore);
+const mapStore = useMapStore();
+const { getCoordinates } = storeToRefs(mapStore);
 
 const colorMode = useColorMode();
 
