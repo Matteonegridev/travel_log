@@ -23,15 +23,22 @@ export const useMapStore = defineStore("mapStore", () => {
     if (!firstPoint)
       return;
 
-    const bounds = getCoordinates.value.reduce((bounds, coordinates) => {
-      return bounds.extend([coordinates.long, coordinates.lat]);
-    }, new LngLatBounds([firstPoint.long, firstPoint.lat], [firstPoint.long, firstPoint.lat]));
+    if (getCoordinates.value.length === 1) {
+      const points = getCoordinates.value[0];
+      if (!points)
+        return;
+      mapInstance.map?.flyTo({ center: [points?.long, points?.lat], zoom: 12, padding: 60 });
+    }
+    else {
+      const bounds = getCoordinates.value.reduce((bounds, coordinates) => {
+        return bounds.extend([coordinates.long, coordinates.lat]);
+      }, new LngLatBounds([firstPoint.long, firstPoint.lat], [firstPoint.long, firstPoint.lat]));
 
-    mapInstance.map?.fitBounds(bounds, { padding: 60 });
+      mapInstance.map?.fitBounds(bounds, { padding: 60 });
+    }
   });
 
   return {
     getCoordinates,
-    mapInstance,
   };
 });
