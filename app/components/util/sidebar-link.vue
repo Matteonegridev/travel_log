@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import clsx from "clsx";
+
 const props = defineProps<Props>();
 
 const route = useRoute();
@@ -13,16 +15,21 @@ type Props = {
 
 <template>
   <li>
-    <NuxtLink
-      :to="props.href"
-      class="btn bg-base-300 w-full justify-start"
-      :class="{ 'bg-base-100': route.path === props.href }"
+    <div
+      :class="clsx(props.isOpen ? 'none' : 'tooltip tooltip-right tooltip-primary')"
+      :data-tip="props.label"
     >
-      <Icon
-        :name="props.icon"
-        size="24"
-      />
-      <span v-if="props.isOpen">{{ label }}</span>
-    </NuxtLink>
+      <NuxtLink
+        :to="props.href"
+        class="btn bg-base-300 w-full justify-start"
+        :class="{ 'bg-base-100': route.path === props.href }"
+      >
+        <Icon
+          :name="props.icon"
+          size="24"
+        />
+        <span v-if="props.isOpen">{{ label }}</span>
+      </NuxtLink>
+    </div>
   </li>
 </template>

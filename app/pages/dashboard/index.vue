@@ -1,9 +1,14 @@
 <script setup lang="ts">
 const locationStore = useLocationStore();
-const { location, pending } = storeToRefs(locationStore);
+const { location, status } = storeToRefs(locationStore);
+
+const isHydrated = ref(false);
+const showLoading = computed(() => {
+  return !isHydrated.value || status.value === "pending";
+});
 
 onMounted(() => {
-  locationStore.refresh();
+  isHydrated.value = true;
 });
 </script>
 
@@ -14,25 +19,19 @@ onMounted(() => {
     </h1>
     <div class="p-6">
       <!-- Show loading spinner -->
-      <template v-if="pending">
-        <div class="grid gap-3 max-sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          <div
-            v-for="value in 9"
-            :key="value"
-          >
-            <util-card-skeleton />
-          </div>
-        </div>
-      </template>
+      <div v-if="showLoading">
+        <util-skeleton />
+      </div>
       <!-- With data -->
-      <template v-else-if="location && location.length > 0">
-        <util-display-locations :data="location" />
-      </template>
 
+      <div v-else-if="location && location.length > 0">
+        <util-display-locations
+          :data="location"
+        />
+        <UiMap class="shrink-0" />
+      </div>
       <!-- Without data -->
-      <template v-else>
-        <util-add-location />
-      </template>
+      <util-add-location v-else />
     </div>
   </div>
 </template>

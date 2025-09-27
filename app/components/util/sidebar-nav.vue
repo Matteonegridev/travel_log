@@ -4,7 +4,17 @@ type Props = {
 };
 const props = defineProps<Props>();
 const locationStore = useLocationStore();
-const { sidebarLinks, pending } = storeToRefs(locationStore);
+const { status } = storeToRefs(locationStore);
+const linksStore = useLinksStore();
+const { sidebarLinks } = storeToRefs(linksStore);
+
+const showSkeleton = ref(true);
+
+onMounted(() => {
+  if (status.value !== "pending") {
+    setTimeout(() => (showSkeleton.value = false), 300);
+  }
+});
 </script>
 
 <template>
@@ -27,14 +37,14 @@ const { sidebarLinks, pending } = storeToRefs(locationStore);
         icon="tabler:square-plus-2"
       />
       <div
-        v-if="sidebarLinks.length > 0"
+        v-if=" sidebarLinks.length > 0"
         class="divider"
       />
-      <div v-if="pending">
-        <div class="skeleton h-8 w-full" />
+      <div v-if="showSkeleton && sidebarLinks.length > 0">
+        <div class="skeleton h-11 w-full" />
       </div>
       <div
-        v-if="sidebarLinks.length > 0 && !pending"
+        v-if="sidebarLinks.length > 0 && !showSkeleton"
         class="flex flex-col gap-2"
       >
         <UtilSidebarLink
