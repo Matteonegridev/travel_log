@@ -1,7 +1,4 @@
 <script setup>
-import {
-  useMap,
-} from "@indoorequal/vue-maplibre-gl";
 import clsx from "clsx";
 
 const mapStore = useMapStore();
@@ -12,18 +9,8 @@ const colorMode = useColorMode();
 const light = "https://tiles.openfreemap.org/styles/liberty";
 const dark = "/style/dark.json";
 const center = [-99.17909, 38.79545];
-const zoom = 4;
+const zoom = 8;
 const mapContainer = ref(null);
-
-const map = useMap();
-watch(
-  () => map.isLoaded,
-  () => {
-    map.map.setProjection({
-      type: "globe",
-    });
-  },
-);
 </script>
 
 <template>
@@ -32,7 +19,6 @@ watch(
   >
     <MglMap
       ref="mapContainer"
-
       :map-style="clsx(colorMode.value === 'dark' ? dark : light)"
       :center="center"
       :zoom="zoom"
