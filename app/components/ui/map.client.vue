@@ -28,6 +28,14 @@ const mapContainer = ref(null);
         :key="value.id"
         :coordinates="[value.long, value.lat]"
       >
+        <mgl-popup>
+          <h1 class="text-lg">
+            {{ value.label }}
+          </h1>
+          <p class="text-md">
+            {{ value.description }}
+          </p>
+        </mgl-popup>
         <template #marker>
           <div
             class="tooltip"

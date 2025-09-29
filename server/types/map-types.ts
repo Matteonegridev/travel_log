@@ -1,6 +1,7 @@
 type IdLabel = {
   id: number;
   label: string;
+  description: string | null;
 
 };
 export type LatLong = {

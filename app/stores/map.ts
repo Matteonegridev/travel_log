@@ -13,6 +13,7 @@ export const useMapStore = defineStore("mapStore", () => {
       label: coord.name,
       lat: coord.lat,
       long: coord.long,
+      description: coord.description,
     }));
   });
 
