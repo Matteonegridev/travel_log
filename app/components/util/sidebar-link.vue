@@ -10,7 +10,7 @@ type Props = {
   href: string;
   icon: string;
   isOpen: boolean;
-  iconColor?: "text-accent" | "text-base";
+  iconColor?: "text-primary" | "text-base";
 };
 </script>
 

@@ -16,6 +16,7 @@ onMounted(() => {
   }
 });
 const mapStore = useMapStore();
+const { selectedPoint } = storeToRefs(mapStore);
 </script>
 
 <template>
@@ -55,9 +56,9 @@ const mapStore = useMapStore();
           :label="value.name"
           :href="value.href"
           :icon="value.icon"
-          :icon-color="mapStore.selectedPoint?.id === value.id ? 'text-accent' : 'text-base'"
-          @mouseenter="mapStore.selectedPoint = value"
-          @mouseleave=" mapStore.selectedPoint = null"
+          :icon-color="selectedPoint?.id === value.id ? 'text-primary' : 'text-base'"
+          @mouseenter="selectedPoint = value"
+          @mouseleave=" selectedPoint = null"
         />
       </div>
       <div class="divider" />

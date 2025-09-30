@@ -2,6 +2,8 @@
 import clsx from "clsx";
 
 const mapStore = useMapStore();
+const { selectedPoint } = storeToRefs(mapStore);
+
 const { getCoordinates } = storeToRefs(mapStore);
 
 const colorMode = useColorMode();
@@ -44,14 +46,14 @@ onMounted(() => {
           <div
             class="tooltip hover:cursor-pointer"
             :data-tip="value.name"
-            @mouseenter="mapStore.selectedPoint = value"
-            @mouseleave="mapStore.selectedPoint = null"
+            @mouseenter="selectedPoint = value"
+            @mouseleave="selectedPoint = null"
           >
             <Icon
               name="tabler:map-pin-filled"
               size="28"
               :class="clsx(
-                mapStore.selectedPoint?.id === value.id
+                selectedPoint?.id === value.id
                   ? 'text-accent transition-all duration-250 ease-in-out'
                   : colorMode.value === 'light'
                     ? 'text-secondary'
