@@ -1,36 +1,29 @@
 <script setup lang="ts">
-export type LocationItem = {
-  id: number;
-  name: string;
-  createdAt: number;
-  updatedAt: number;
-  userId: number;
-  slug: string;
-  description: string | null;
-  lat: number;
-  long: number;
-};
+import type { MapPin } from "~~/server/types/map-types";
 
-const props = defineProps<{ data: LocationItem[] }>();
+import clsx from "clsx";
+
+defineProps<{ data: MapPin }>();
+const mapStore = useMapStore();
+const { selectedPoint } = storeToRefs(mapStore);
 </script>
 
 <template>
-  <div
-    class="grid gap-3  max-sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-  >
-    <div
-      v-for="value in props.data"
-      :key="value.id"
-      class="card card-border bg-base-200 card-md"
+  <div>
+    <NuxkLink
+      :class="clsx(data.id === mapStore.selectedPoint?.id ? 'border-accent' : 'border-transparent',
+                   'card card-border bg-base-200 card-md hover:cursor-pointer border-2 transition-all duration-150 ease-in-out')"
+      @mouseenter="selectedPoint = data"
+      @mouseleave="selectedPoint = null"
     >
       <div
         class="card-body"
       >
         <h2 class="card-title">
-          {{ value.name }}
+          {{ data.name }}
         </h2>
-        <p>{{ value.description }}</p>
+        <p>{{ data.description }}</p>
       </div>
-    </div>
+    </NuxkLink>
   </div>
 </template>

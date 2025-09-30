@@ -15,6 +15,8 @@ onMounted(() => {
     setTimeout(() => (showSkeleton.value = false), 300);
   }
 });
+const mapStore = useMapStore();
+const { selectedPoint } = storeToRefs(mapStore);
 </script>
 
 <template>
@@ -51,9 +53,12 @@ onMounted(() => {
           v-for="value in sidebarLinks"
           :key="value.id"
           :is-open="props.isOpen"
-          :label="value.label"
+          :label="value.name"
           :href="value.href"
           :icon="value.icon"
+          :icon-color="selectedPoint?.id === value.id ? 'text-primary' : 'text-base'"
+          @mouseenter="selectedPoint = value"
+          @mouseleave=" selectedPoint = null"
         />
       </div>
       <div class="divider" />

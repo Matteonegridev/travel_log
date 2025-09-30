@@ -24,10 +24,16 @@ onMounted(() => {
       </div>
       <!-- With data -->
 
-      <div v-else-if="location && location.length > 0">
-        <util-display-locations
-          :data="location"
-        />
+      <div
+        v-else-if="location && location.length > 0"
+      >
+        <div class="grid gap-3 max-sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          <util-display-locations
+            v-for="data in location"
+            :key="data.id"
+            :data="data"
+          />
+        </div>
         <UiMap class="shrink-0" />
       </div>
       <!-- Without data -->

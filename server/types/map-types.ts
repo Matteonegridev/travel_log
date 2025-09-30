@@ -1,16 +1,12 @@
-type IdLabel = {
-  id: number;
-  label: string;
-
-};
-export type LatLong = {
+export type MapPin = {
   lat: number;
   long: number;
+  id: number;
+  name: string;
+  description: string | null;
 };
-
-export type MapPin = IdLabel & LatLong;
 
 export type Links = {
   href: string;
   icon: string;
-} & IdLabel;
+} & MapPin;

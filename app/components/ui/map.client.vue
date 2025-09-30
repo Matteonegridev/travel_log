@@ -2,6 +2,8 @@
 import clsx from "clsx";
 
 const mapStore = useMapStore();
+const { selectedPoint } = storeToRefs(mapStore);
+
 const { getCoordinates } = storeToRefs(mapStore);
 
 const colorMode = useColorMode();
@@ -11,6 +13,10 @@ const dark = "/style/dark.json";
 const center = [-99.17909, 38.79545];
 const zoom = 8;
 const mapContainer = ref(null);
+
+onMounted(() => {
+  mapStore.init();
+});
 </script>
 
 <template>
@@ -28,15 +34,31 @@ const mapContainer = ref(null);
         :key="value.id"
         :coordinates="[value.long, value.lat]"
       >
+        <mgl-popup>
+          <h1 class="text-lg">
+            {{ value.name }}
+          </h1>
+          <p class="text-md">
+            {{ value.description }}
+          </p>
+        </mgl-popup>
         <template #marker>
           <div
-            class="tooltip"
-            :data-tip="value.label"
+            class="tooltip hover:cursor-pointer"
+            :data-tip="value.name"
+            @mouseenter="selectedPoint = value"
+            @mouseleave="selectedPoint = null"
           >
             <Icon
               name="tabler:map-pin-filled"
               size="28"
-              :class="clsx(colorMode.value === 'dark' ? 'text-primary' : 'text-secondary')"
+              :class="clsx(
+                selectedPoint?.id === value.id
+                  ? 'text-accent transition-all duration-250 ease-in-out'
+                  : colorMode.value === 'light'
+                    ? 'text-secondary'
+                    : 'text-primary',
+              )"
             />
           </div>
         </template>
