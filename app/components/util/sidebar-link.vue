@@ -10,6 +10,7 @@ type Props = {
   href: string;
   icon: string;
   isOpen: boolean;
+  iconColor?: "text-accent" | "text-base";
 };
 </script>
 
@@ -25,6 +26,7 @@ type Props = {
         :class="{ 'bg-base-100': route.path === props.href }"
       >
         <Icon
+          :class="clsx(props.iconColor, 'transition-all duration-250 ease-in-out')"
           :name="props.icon"
           size="24"
         />
