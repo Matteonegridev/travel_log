@@ -46,8 +46,8 @@ onMounted(() => {
           <div
             class="tooltip hover:cursor-pointer"
             :data-tip="value.name"
-            @mouseenter="selectedPoint = value"
-            @mouseleave="selectedPoint = null"
+            @mouseenter="mapStore.highlightNoZoomOnPin(value)"
+            @mouseleave="mapStore.highlightNoZoomOnPin(null)"
           >
             <Icon
               name="tabler:map-pin-filled"
@@ -64,6 +64,10 @@ onMounted(() => {
         </template>
       </mgl-marker>
     </MglMap>
+    <div
+      :ref="mapStore.markOnMap"
+      class="coordinates"
+    />
   </div>
 </template>
 
@@ -79,4 +83,17 @@ onMounted(() => {
   border-radius: 0.5rem;
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
 }
+.coordinates {
+        background: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        position: absolute;
+        bottom: 40px;
+        left: 10px;
+        padding: 5px 10px;
+        margin: 0;
+        font-size: 11px;
+        line-height: 18px;
+        border-radius: 3px;
+        display: none;
+    }
 </style>
