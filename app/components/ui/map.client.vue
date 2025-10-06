@@ -32,6 +32,7 @@ onMounted(() => {
       <mgl-marker
         v-for="value in getCoordinates"
         :key="value.id"
+
         :coordinates="[value.long, value.lat]"
       >
         <mgl-popup>
@@ -74,9 +75,8 @@ onMounted(() => {
 
 <style scoped>
 .map-wrapper {
-  height: 60dvh;
   width:100%;
-  padding-top: 1rem;
+  padding: 1rem;
 
 }
 

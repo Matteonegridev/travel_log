@@ -6,14 +6,14 @@ export const useMapStore = defineStore("mapStore", () => {
   const locationStore = useLocationStore();
   const { location } = storeToRefs(locationStore);
   const selectedPoint = ref<MapPin | null>(null);
-  const noZoomOnPin = ref(true);
+  const zoomOnPin = ref(true);
 
   const getCoordinates = computed<MapPin[]>(() => {
     return location?.value;
   });
 
-  const highlightNoZoomOnPin = (point: MapPin) => {
-    noZoomOnPin.value = false;
+  const highlightNoZoomOnPin = (point: MapPin | null) => {
+    zoomOnPin.value = false;
     selectedPoint.value = point;
   };
 
@@ -27,13 +27,13 @@ export const useMapStore = defineStore("mapStore", () => {
     // zoom to:
     effect(() => {
       if (selectedPoint.value) {
-        if (noZoomOnPin.value) {
+        if (zoomOnPin.value) {
           mapInstance.map?.flyTo({
             center: [selectedPoint.value.long, selectedPoint.value.lat],
-            speed: 0.5,
+            speed: 0.2,
           });
         }
-        noZoomOnPin.value = true;
+        zoomOnPin.value = true;
       }
       else {
         mapBounds(mapInstance, getCoordinates.value);

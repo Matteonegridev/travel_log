@@ -54,7 +54,7 @@ onBeforeRouteLeave(() => {
 
 <template>
   <div
-    class="container mx-auto  mt-4 max-w-md "
+    class="containe mx-auto  mt-4 max-w-md "
   >
     <div class="mb-6 flex flex-col gap-4 ">
       <h1 class="text-xl">
