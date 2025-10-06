@@ -6,6 +6,7 @@ export const useMapStore = defineStore("mapStore", () => {
   const locationStore = useLocationStore();
   const { location } = storeToRefs(locationStore);
   const selectedPoint = ref<MapPin | null>(null);
+  const draggablePoint = ref<MapPin | null>(null);
   const zoomOnPin = ref(true);
 
   const getCoordinates = computed<MapPin[]>(() => {
@@ -26,6 +27,8 @@ export const useMapStore = defineStore("mapStore", () => {
 
     // zoom to:
     effect(() => {
+      if (draggablePoint.value)
+        return;
       if (selectedPoint.value) {
         if (zoomOnPin.value) {
           mapInstance.map?.flyTo({
@@ -46,5 +49,6 @@ export const useMapStore = defineStore("mapStore", () => {
     init,
     selectedPoint,
     highlightNoZoomOnPin,
+    draggablePoint,
   };
 });

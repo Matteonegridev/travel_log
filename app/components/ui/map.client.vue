@@ -2,9 +2,8 @@
 import clsx from "clsx";
 
 const mapStore = useMapStore();
-const { selectedPoint } = storeToRefs(mapStore);
 
-const { getCoordinates } = storeToRefs(mapStore);
+const { getCoordinates, selectedPoint, draggablePoint } = storeToRefs(mapStore);
 
 const colorMode = useColorMode();
 
@@ -17,6 +16,14 @@ const mapContainer = ref(null);
 onMounted(() => {
   mapStore.init();
 });
+
+// funzione che permette di assegnare lat and long ai draggable points:
+function setDraggablePoints(points) {
+  if (mapStore.draggablePoint) {
+    mapStore.draggablePoint.lat = points.lat;
+    mapStore.draggablePoint.long = points.lng;
+  }
+}
 </script>
 
 <template>
@@ -29,10 +36,30 @@ onMounted(() => {
       :center="center"
       :zoom="zoom"
     >
+      <!-- draggable marker -->
+      <mgl-marker
+        v-if="draggablePoint"
+        draggable
+        :coordinates="center"
+        @update:coordinates="setDraggablePoints"
+      >
+        <template #marker>
+          <div
+            class="tooltip hover:cursor-pointer"
+            data-tip="Drag to your desired location"
+          >
+            <Icon
+              name="tabler:map-pin-filled"
+              size="32"
+              class="text-warning"
+            />
+          </div>
+        </template>
+      </mgl-marker>
+      <!-- draggable marker -->
       <mgl-marker
         v-for="value in getCoordinates"
         :key="value.id"
-
         :coordinates="[value.long, value.lat]"
       >
         <mgl-popup>
@@ -76,7 +103,7 @@ onMounted(() => {
 <style scoped>
 .map-wrapper {
   width:100%;
-  padding: 1rem;
+  padding: 1.5rem;
 
 }
 

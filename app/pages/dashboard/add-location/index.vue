@@ -9,9 +9,27 @@ const submitError = ref("");
 const loading = ref(false);
 const { $csrfFetch } = useNuxtApp();
 const locationStore = useLocationStore();
+const mapStore = useMapStore();
 
-const { handleSubmit, errors, meta, resetForm, setErrors } = useForm({
+const { handleSubmit, errors, meta, resetForm, setErrors, setFieldValue } = useForm({
   validationSchema: toTypedSchema(formSchema as any),
+});
+
+onMounted(() => {
+  mapStore.draggablePoint = {
+    lat: 38.79545,
+    long: -99.17909,
+    id: 1,
+    description: "",
+    name: "Added Point",
+  };
+});
+
+effect(() => {
+  if (mapStore.draggablePoint) {
+    setFieldValue("lat", mapStore.draggablePoint?.lat);
+    setFieldValue("long", mapStore.draggablePoint?.long);
+  }
 });
 
 const onSubmit = handleSubmit(async (values) => {
@@ -48,19 +66,19 @@ onBeforeRouteLeave(() => {
       return false;
     }
   }
+  mapStore.draggablePoint = null;
   return true;
 });
 </script>
 
 <template>
   <div
-    class="containe mx-auto  mt-4 max-w-md "
+    class="container mx-auto  mt-4 max-w-md "
   >
-    <div class="mb-6 flex flex-col gap-4 ">
-      <h1 class="text-xl">
-        Add Location
+    <div class=" mb-6 flex flex-col gap-4 ">
+      <h1 class="text-3xl font-bold">
+        Add Your Location
       </h1>
-      <p>A location is a place you hae traveled or will travel to. It can be a city, country, State or point of intertest. You can add specific times you visited this location after adding it. </p>
     </div>
 
     <!-- Alert -->
@@ -88,7 +106,7 @@ onBeforeRouteLeave(() => {
     <!-- Alert -->
 
     <form
-      class="flex flex-col gap-3"
+      class="bg-base-200 flex flex-col gap-3 rounded-md p-4 shadow-md"
       @submit.prevent="onSubmit"
     >
       <util-form-field
@@ -106,25 +124,30 @@ onBeforeRouteLeave(() => {
         label="Description"
         type="textarea"
       />
+      <div>
+        <p>{{ mapStore.draggablePoint?.lat.toFixed(5) }}</p>
+        <p>{{ mapStore.draggablePoint?.long.toFixed(5) }}</p>
+      </div>
 
-      <util-form-field
-        :disabled="loading"
-        html-tag="input"
-        :error="errors.lat"
-        name="lat"
-        label="Latitude"
-        type="number"
-        placeholder="Must be between -90 an 90"
-      />
-      <util-form-field
-        :disabled="loading"
-        html-tag="input"
-        :error="errors.long"
-        name="long"
-        label="Longitude"
-        type="number"
-        placeholder="Must be between -180 an 180"
-      />
+      <!-- <util-form-field
+          :disabled="loading"
+          html-tag="input"
+          :error="errors.lat"
+          name="lat"
+          label="Latitude"
+          type="number"
+          placeholder="Must be between -90 an 90"
+        />
+        <util-form-field
+          :disabled="loading"
+          html-tag="input"
+          :error="errors.long"
+          name="long"
+          label="Longitude"
+          type="number"
+          placeholder="Must be between -180 an 180"
+        /> -->
+
       <div class="mt-4 flex justify-between">
         <util-form-button
           :loading="loading"

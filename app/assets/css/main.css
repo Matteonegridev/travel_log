@@ -7,6 +7,13 @@
     dark --prefersdark;
 }
 
+@layer utilities {
+  .grid-cols-var {
+    grid-template-columns: 1fr 2fr;
+    padding: 1rem;
+  }
+}
+
 html[data-theme="light"] .maplibregl-popup-content {
   @apply px-5;
 }
