@@ -10,9 +10,16 @@ const loading = ref(false);
 const { $csrfFetch } = useNuxtApp();
 const locationStore = useLocationStore();
 const mapStore = useMapStore();
+const showInputs = ref(false);
 
-const { handleSubmit, errors, meta, resetForm, setErrors, setFieldValue } = useForm({
+const { handleSubmit, errors, meta, resetForm, setErrors, setFieldValue, controlledValues } = useForm({
   validationSchema: toTypedSchema(formSchema as any),
+  initialValues: {
+    lat: 38.79545,
+    long: -99.17909,
+    description: "",
+    name: "",
+  },
 });
 
 onMounted(() => {
@@ -31,6 +38,13 @@ effect(() => {
     setFieldValue("long", mapStore.draggablePoint?.long);
   }
 });
+
+function toggleInputs() {
+  showInputs.value = !showInputs.value;
+}
+function toFixedNum(value: number) {
+  return value?.toFixed(5);
+}
 
 const onSubmit = handleSubmit(async (values) => {
   try {
@@ -124,12 +138,25 @@ onBeforeRouteLeave(() => {
         label="Description"
         type="textarea"
       />
-      <div>
-        <p>{{ mapStore.draggablePoint?.lat.toFixed(5) }}</p>
-        <p>{{ mapStore.draggablePoint?.long.toFixed(5) }}</p>
+      <div class="text-base-content/50 flex flex-col gap-2 text-sm">
+        <p class="text-base-content/75 ">
+          Drag the marker to change the coordinates:
+        </p>
+        <div class="flex gap-3">
+          <p>Latitude: {{ toFixedNum(controlledValues.lat) }}</p>
+          <p>Longitude: {{ toFixedNum(controlledValues.long) }}</p>
+        </div>
+        <p class="text-base-content/75">
+          Or type it <button
+            class="text-accent cursor-pointer underline"
+            @click="toggleInputs"
+          >
+            here
+          </button>
+        </p>
       </div>
-
-      <!-- <util-form-field
+      <div v-show="showInputs">
+        <util-form-field
           :disabled="loading"
           html-tag="input"
           :error="errors.lat"
@@ -146,8 +173,8 @@ onBeforeRouteLeave(() => {
           label="Longitude"
           type="number"
           placeholder="Must be between -180 an 180"
-        /> -->
-
+        />
+      </div>
       <div class="mt-4 flex justify-between">
         <util-form-button
           :loading="loading"

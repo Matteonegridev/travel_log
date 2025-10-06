@@ -23,10 +23,11 @@ export const useMapStore = defineStore("mapStore", () => {
     const mapInstance = useMap();
     const { mapBounds } = useMapBounds();
 
-    mapBounds(mapInstance, getCoordinates.value);
+    mapBounds(mapInstance, getCoordinates.value, draggablePoint.value);
 
     // zoom to:
     effect(() => {
+      // se il marker draggable ha valori non vi è zoom
       if (draggablePoint.value)
         return;
       if (selectedPoint.value) {
@@ -42,6 +43,12 @@ export const useMapStore = defineStore("mapStore", () => {
         mapBounds(mapInstance, getCoordinates.value);
       }
     });
+
+    watch(draggablePoint, (newVal, oldVal) => {
+      if (newVal && !oldVal) {
+        mapInstance.map?.flyTo({ center: [newVal?.long, newVal?.lat], zoom: 6, speed: 0.8, padding: 100 });
+      }
+    }, { deep: true, immediate: true });
   }
 
   return {
