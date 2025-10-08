@@ -22,8 +22,8 @@ type Props = {
     >
       <NuxtLink
         :to="props.href"
-        class="btn bg-base-300 w-full justify-start"
-        :class="{ 'bg-base-100': route.path === props.href }"
+        class="btn bg-base-100 w-full justify-start"
+        :class="clsx(route.path === props.href && 'bg-base-300')"
       >
         <Icon
           :class="clsx(props.iconColor, 'transition-all duration-250 ease-in-out')"

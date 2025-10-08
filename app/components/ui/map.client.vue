@@ -2,9 +2,8 @@
 import clsx from "clsx";
 
 const mapStore = useMapStore();
-const { selectedPoint } = storeToRefs(mapStore);
 
-const { getCoordinates } = storeToRefs(mapStore);
+const { getCoordinates, selectedPoint, draggablePoint } = storeToRefs(mapStore);
 
 const colorMode = useColorMode();
 
@@ -17,6 +16,14 @@ const mapContainer = ref(null);
 onMounted(() => {
   mapStore.init();
 });
+
+// funzione che permette di assegnare lat and long ai draggable points:
+function setDraggablePoints(points) {
+  if (mapStore.draggablePoint) {
+    mapStore.draggablePoint.lat = points.lat;
+    mapStore.draggablePoint.long = points.lng;
+  }
+}
 </script>
 
 <template>
@@ -29,6 +36,27 @@ onMounted(() => {
       :center="center"
       :zoom="zoom"
     >
+      <!-- draggable marker -->
+      <mgl-marker
+        v-if="draggablePoint"
+        draggable
+        :coordinates="center"
+        @update:coordinates="setDraggablePoints"
+      >
+        <template #marker>
+          <div
+            class="tooltip hover:cursor-pointer"
+            data-tip="Drag to your desired location"
+          >
+            <Icon
+              name="tabler:map-pin-filled"
+              size="32"
+              class="text-warning"
+            />
+          </div>
+        </template>
+      </mgl-marker>
+      <!-- draggable marker -->
       <mgl-marker
         v-for="value in getCoordinates"
         :key="value.id"
@@ -45,9 +73,10 @@ onMounted(() => {
         <template #marker>
           <div
             class="tooltip hover:cursor-pointer"
+            :class="clsx(selectedPoint?.id === value.id && 'tooltip-open')"
             :data-tip="value.name"
-            @mouseenter="selectedPoint = value"
-            @mouseleave="selectedPoint = null"
+            @mouseenter="mapStore.highlightNoZoomOnPin(value)"
+            @mouseleave="mapStore.highlightNoZoomOnPin(null)"
           >
             <Icon
               name="tabler:map-pin-filled"
@@ -64,14 +93,17 @@ onMounted(() => {
         </template>
       </mgl-marker>
     </MglMap>
+    <div
+      :ref="mapStore.markOnMap"
+      class="coordinates"
+    />
   </div>
 </template>
 
 <style scoped>
 .map-wrapper {
-  height: 60dvh;
   width:100%;
-  padding-top: 1rem;
+  padding: 1.5rem;
 
 }
 
@@ -79,4 +111,17 @@ onMounted(() => {
   border-radius: 0.5rem;
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
 }
+.coordinates {
+        background: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        position: absolute;
+        bottom: 40px;
+        left: 10px;
+        padding: 5px 10px;
+        margin: 0;
+        font-size: 11px;
+        line-height: 18px;
+        border-radius: 3px;
+        display: none;
+    }
 </style>

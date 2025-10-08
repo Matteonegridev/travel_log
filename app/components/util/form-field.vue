@@ -32,7 +32,7 @@ const { value, errorMessage } = useField<string | number>(() => props.name);
         errorMessage && 'input-error',
       )"
       :disabled="props.disabled"
-      :step="props.type === 'number' ? 'any' : ''"
+      :step="props.type === 'number' ? '0.00001' : ''"
     >
     <textarea
       v-else

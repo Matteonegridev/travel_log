@@ -34,7 +34,6 @@ onMounted(() => {
             :data="data"
           />
         </div>
-        <UiMap class="shrink-0" />
       </div>
       <!-- Without data -->
       <util-add-location v-else />

@@ -9,10 +9,42 @@ const submitError = ref("");
 const loading = ref(false);
 const { $csrfFetch } = useNuxtApp();
 const locationStore = useLocationStore();
+const mapStore = useMapStore();
+const showInputs = ref(false);
 
-const { handleSubmit, errors, meta, resetForm, setErrors } = useForm({
+const { handleSubmit, errors, meta, resetForm, setErrors, setFieldValue, controlledValues } = useForm({
   validationSchema: toTypedSchema(formSchema as any),
+  initialValues: {
+    lat: 38.79545,
+    long: -99.17909,
+    description: "",
+    name: "",
+  },
 });
+
+onMounted(() => {
+  mapStore.draggablePoint = {
+    lat: 38.79545,
+    long: -99.17909,
+    id: 1,
+    description: "",
+    name: "Added Point",
+  };
+});
+
+effect(() => {
+  if (mapStore.draggablePoint) {
+    setFieldValue("lat", mapStore.draggablePoint?.lat);
+    setFieldValue("long", mapStore.draggablePoint?.long);
+  }
+});
+
+function toggleInputs() {
+  showInputs.value = !showInputs.value;
+}
+function toFixedNum(value: number) {
+  return value?.toFixed(5);
+}
 
 const onSubmit = handleSubmit(async (values) => {
   try {
@@ -48,6 +80,7 @@ onBeforeRouteLeave(() => {
       return false;
     }
   }
+  mapStore.draggablePoint = null;
   return true;
 });
 </script>
@@ -56,11 +89,10 @@ onBeforeRouteLeave(() => {
   <div
     class="container mx-auto  mt-4 max-w-md "
   >
-    <div class="mb-6 flex flex-col gap-4 ">
-      <h1 class="text-xl">
-        Add Location
+    <div class=" mb-6 flex flex-col gap-4 ">
+      <h1 class="text-3xl font-bold">
+        Add Your Location
       </h1>
-      <p>A location is a place you hae traveled or will travel to. It can be a city, country, State or point of intertest. You can add specific times you visited this location after adding it. </p>
     </div>
 
     <!-- Alert -->
@@ -88,7 +120,7 @@ onBeforeRouteLeave(() => {
     <!-- Alert -->
 
     <form
-      class="flex flex-col gap-3"
+      class="bg-base-200 flex flex-col gap-3 rounded-md p-4 shadow-md"
       @submit.prevent="onSubmit"
     >
       <util-form-field
@@ -106,25 +138,52 @@ onBeforeRouteLeave(() => {
         label="Description"
         type="textarea"
       />
-
-      <util-form-field
-        :disabled="loading"
-        html-tag="input"
-        :error="errors.lat"
-        name="lat"
-        label="Latitude"
-        type="number"
-        placeholder="Must be between -90 an 90"
-      />
-      <util-form-field
-        :disabled="loading"
-        html-tag="input"
-        :error="errors.long"
-        name="long"
-        label="Longitude"
-        type="number"
-        placeholder="Must be between -180 an 180"
-      />
+      <div
+        v-if="!showInputs"
+        class="text-base-content/50 flex flex-col gap-2 text-sm"
+      >
+        <p class="text-base-content/75 ">
+          Drag the marker to change the coordinates:
+        </p>
+        <div class="flex gap-3">
+          <p>Latitude: {{ toFixedNum(controlledValues.lat) }}</p>
+          <p>Longitude: {{ toFixedNum(controlledValues.long) }}</p>
+        </div>
+        <p class="text-base-content/75">
+          Or type it <button
+            class="text-accent cursor-pointer underline"
+            @click="toggleInputs"
+          >
+            here
+          </button>
+        </p>
+      </div>
+      <div v-if="showInputs">
+        <button
+          class="text-accent cursor-pointer text-sm underline"
+          @click="toggleInputs"
+        >
+          Use draggable marker instead
+        </button>
+        <util-form-field
+          :disabled="loading"
+          html-tag="input"
+          :error="errors.lat"
+          name="lat"
+          label="Latitude"
+          type="number"
+          placeholder="Must be between -90 an 90"
+        />
+        <util-form-field
+          :disabled="loading"
+          html-tag="input"
+          :error="errors.long"
+          name="long"
+          label="Longitude"
+          type="number"
+          placeholder="Must be between -180 an 180"
+        />
+      </div>
       <div class="mt-4 flex justify-between">
         <util-form-button
           :loading="loading"
