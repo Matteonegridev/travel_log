@@ -138,7 +138,10 @@ onBeforeRouteLeave(() => {
         label="Description"
         type="textarea"
       />
-      <div class="text-base-content/50 flex flex-col gap-2 text-sm">
+      <div
+        v-if="!showInputs"
+        class="text-base-content/50 flex flex-col gap-2 text-sm"
+      >
         <p class="text-base-content/75 ">
           Drag the marker to change the coordinates:
         </p>
@@ -155,7 +158,13 @@ onBeforeRouteLeave(() => {
           </button>
         </p>
       </div>
-      <div v-show="showInputs">
+      <div v-if="showInputs">
+        <button
+          class="text-accent cursor-pointer text-sm underline"
+          @click="toggleInputs"
+        >
+          Use draggable marker instead
+        </button>
         <util-form-field
           :disabled="loading"
           html-tag="input"
