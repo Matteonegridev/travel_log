@@ -17,6 +17,14 @@ export async function findExistingLocation(locationName: LocationSchemaValidatio
   });
 }
 
+export async function findLocationSlug(slug: string, userId: number) {
+  return db.query.location.findFirst({
+    where: and(
+      eq(location.slug, slug),
+      eq(location.userId, userId),
+    ),
+  });
+}
 async function findExistingSlug(slug: string) {
   return db.query.location.findFirst({
     where: eq(location.slug, slug),

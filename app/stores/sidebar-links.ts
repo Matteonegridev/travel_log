@@ -7,7 +7,7 @@ export const useLinksStore = defineStore("linksStore", () => {
   const sidebarLinks = computed<Links[]>(() => {
     return location?.value.map(location => ({
       name: location.name,
-      href: `location-${location.slug}`,
+      href: `/dashboard/location/${location.slug}`,
       icon: "tabler:map-pin-filled",
       id: location.id,
       description: null,
