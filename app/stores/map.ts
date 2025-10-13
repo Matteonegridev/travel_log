@@ -3,14 +3,16 @@ import type { MapPin } from "~~/server/types/map-types";
 import { useMapBounds } from "~/composable/map-bounds";
 
 export const useMapStore = defineStore("mapStore", () => {
-  const locationStore = useLocationStore();
-  const { location } = storeToRefs(locationStore);
   const selectedPoint = ref<MapPin | null>(null);
   const draggablePoint = ref<MapPin | null>(null);
   const zoomOnPin = ref(true);
+  const coordinates = ref<MapPin[]>([]);
 
-  const getCoordinates = computed<MapPin[]>(() => {
-    return location?.value;
+  const getCoordinates = computed<MapPin[]>({
+    get: () => coordinates.value,
+    set: (newValue: MapPin | MapPin[]) => {
+      coordinates.value = Array.isArray(newValue) ? newValue : [newValue];
+    },
   });
 
   const highlightNoZoomOnPin = (point: MapPin | null) => {
@@ -57,5 +59,6 @@ export const useMapStore = defineStore("mapStore", () => {
     selectedPoint,
     highlightNoZoomOnPin,
     draggablePoint,
+
   };
 });

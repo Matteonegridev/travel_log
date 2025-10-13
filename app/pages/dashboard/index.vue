@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const locationStore = useLocationStore();
+const mapStore = useMapStore();
 const { location, status } = storeToRefs(locationStore);
 
 const isHydrated = ref(false);
@@ -9,6 +10,7 @@ const showLoading = computed(() => {
 
 onMounted(() => {
   isHydrated.value = true;
+  mapStore.getCoordinates = location.value;
 });
 </script>
 
