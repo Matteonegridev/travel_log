@@ -75,8 +75,8 @@ function setDraggablePoints(points) {
             class="tooltip hover:cursor-pointer"
             :class="clsx(selectedPoint?.id === value.id && 'tooltip-open')"
             :data-tip="value.name"
-            @mouseenter="mapStore.highlightNoZoomOnPin(value)"
-            @mouseleave="mapStore.highlightNoZoomOnPin(null)"
+            @mouseenter="selectedPoint = value"
+            @mouseleave="selectedPoint = null"
           >
             <Icon
               name="tabler:map-pin-filled"

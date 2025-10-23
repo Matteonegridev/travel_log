@@ -5,8 +5,8 @@ import { useMapBounds } from "~/composable/map-bounds";
 export const useMapStore = defineStore("mapStore", () => {
   const selectedPoint = ref<MapPin | null>(null);
   const draggablePoint = ref<MapPin | null>(null);
-  const zoomOnPin = ref(true);
   const coordinates = ref<MapPin[]>([]);
+  // const zoomOnPin = ref(true);
 
   const getCoordinates = computed<MapPin[]>({
     get: () => coordinates.value,
@@ -15,10 +15,10 @@ export const useMapStore = defineStore("mapStore", () => {
     },
   });
 
-  const highlightNoZoomOnPin = (point: MapPin | null) => {
-    zoomOnPin.value = false;
-    selectedPoint.value = point;
-  };
+  // const highlightNoZoomOnPin = (point: MapPin | null) => {
+  //   zoomOnPin.value = false;
+  //   selectedPoint.value = point;
+  // };
 
   async function init() {
     const { useMap } = await import("@indoorequal/vue-maplibre-gl");
@@ -32,18 +32,20 @@ export const useMapStore = defineStore("mapStore", () => {
       // se il marker draggable ha valori non vi è zoom
       if (draggablePoint.value)
         return;
-      if (selectedPoint.value) {
-        if (zoomOnPin.value) {
-          mapInstance.map?.flyTo({
-            center: [selectedPoint.value.long, selectedPoint.value.lat],
-            speed: 0.2,
-          });
-        }
-        zoomOnPin.value = true;
-      }
-      else {
+      // if (selectedPoint.value) {
+      //   if (zoomOnPin.value) {
+      //     mapInstance.map?.flyTo({
+      //       center: [selectedPoint.value.long, selectedPoint.value.lat],
+      //       speed: 0.1,
+      //     });
+      //   }
+      //   zoomOnPin.value = true;
+      // }
+      // else {
+      if (!selectedPoint.value) {
         mapBounds(mapInstance, getCoordinates.value);
       }
+      // }
     });
 
     watch(draggablePoint, (newVal, oldVal) => {
@@ -57,7 +59,7 @@ export const useMapStore = defineStore("mapStore", () => {
     getCoordinates,
     init,
     selectedPoint,
-    highlightNoZoomOnPin,
+    // highlightNoZoomOnPin,
     draggablePoint,
 
   };
