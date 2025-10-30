@@ -14,18 +14,18 @@ export async function findExistingLocation(locationName: LocationSchemaValidatio
       eq(location.name, locationName.name),
       eq(location.userId, userId),
     ),
-    with: {
-      locationLogs: true,
-    },
   });
 }
 
-export async function findLocationSlug(slug: string, userId: number) {
+export async function findLocation(slug: string, userId: number) {
   return db.query.location.findFirst({
     where: and(
       eq(location.slug, slug),
       eq(location.userId, userId),
     ),
+    with: {
+      locationLogs: true,
+    },
   });
 }
 async function findExistingSlug(slug: string) {

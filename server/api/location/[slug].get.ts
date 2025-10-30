@@ -1,9 +1,9 @@
-import { findLocationSlug } from "~~/server/database/queries/location";
+import { findLocation } from "~~/server/database/queries/location";
 import defineAuthenticatedEventHandler from "~~/server/types/define-auth-event";
 
 export default defineAuthenticatedEventHandler(async (event) => {
   const slug = getRouterParam(event, "slug") as string;
-  const location = await findLocationSlug(slug, event.context.user.id);
+  const location = await findLocation(slug, event.context.user.id);
 
   if (!location) {
     return sendError(event, createError({

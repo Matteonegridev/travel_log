@@ -11,7 +11,7 @@ effect(() => {
 </script>
 
 <template>
-  <div class="min-h-[30dvh]">
+  <div class="min-h-[30dvh] p-5">
     <div v-if="status === 'pending'">
       <div class="loading" />
     </div>
@@ -30,6 +30,20 @@ effect(() => {
         {{ location?.name }}
       </h1>
       <p>{{ location.description }}</p>
+    </div>
+    <div
+      v-if="!location?.locationLogs.length"
+      class="mt-4 flex flex-col gap-2"
+    >
+      <p>
+        You have no logs at this location yet.
+      </p>
+      <button class="btn btn-primary self-start">
+        <Icon
+          name="tabler:map-pin-plus"
+          size="24"
+        />  Add Log
+      </button>
     </div>
   </div>
 </template>
