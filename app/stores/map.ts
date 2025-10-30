@@ -8,6 +8,7 @@ export const useMapStore = defineStore("mapStore", () => {
   const coordinates = ref<MapPin[]>([]);
   // const zoomOnPin = ref(true);
 
+  // Sometimes MapPin is array other times not array, that's why the creation of a computed property with a setter:
   const getCoordinates = computed<MapPin[]>({
     get: () => coordinates.value,
     set: (newValue: MapPin | MapPin[]) => {

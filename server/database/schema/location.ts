@@ -1,9 +1,11 @@
 import type { z } from "better-auth";
 
+import { relations } from "drizzle-orm";
 import { int, real, sqliteTable, text, unique } from "drizzle-orm/sqlite-core";
 import { createSelectSchema } from "drizzle-zod";
 
 import { user } from "./auth-schema";
+import { locationLog } from "./location-log";
 
 export const location = sqliteTable("location-table", {
   id: int().primaryKey({ autoIncrement: true }),
@@ -18,6 +20,10 @@ export const location = sqliteTable("location-table", {
 }, t => [
   unique().on(t.name, t.userId),
 ]);
+
+export const locationRelations = relations(location, ({ many }) => ({
+  locationLogs: many(locationLog),
+}));
 
 export const formSchema = createSelectSchema(location, {
   name: field => field.min(4, "Too Short!").max(100, "That's a bit excessive long").trim(),

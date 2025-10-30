@@ -14,6 +14,9 @@ export async function findExistingLocation(locationName: LocationSchemaValidatio
       eq(location.name, locationName.name),
       eq(location.userId, userId),
     ),
+    with: {
+      locationLogs: true,
+    },
   });
 }
 
