@@ -7,8 +7,8 @@ const route = useRoute();
 
 type Props = {
   label?: string;
-  href: string;
-  icon: string;
+  href?: string;
+  icon?: string;
   isOpen: boolean;
   iconColor?: "text-primary" | "text-base";
 };
@@ -27,7 +27,7 @@ type Props = {
       >
         <Icon
           :class="clsx(props.iconColor, 'transition-all duration-250 ease-in-out')"
-          :name="props.icon"
+          :name="props.icon || ''"
           size="24"
         />
         <span v-if="props.isOpen">{{ label }}</span>

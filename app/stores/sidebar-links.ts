@@ -9,6 +9,7 @@ export const useLinksStore = defineStore("linksStore", () => {
       name: location.name,
       href: `/dashboard/location/${location.slug}`,
       icon: "tabler:map-pin-filled",
+      slug: location.slug,
       id: location.id,
       description: null,
       lat: location.lat,

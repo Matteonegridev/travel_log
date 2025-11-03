@@ -1,18 +1,22 @@
 <script setup lang="ts">
-const route = useRoute();
-const { data: location, status, error } = await useLazyFetch(`/api/location/${route.params.slug}`);
+const locationSlug = useLocationSlug();
+const { slugLocation, error, slugStatus } = storeToRefs(locationSlug);
 const mapStore = useMapStore();
 
+onMounted(() => {
+  locationSlug.refreshSlug();
+});
+
 effect(() => {
-  if (location.value) {
-    mapStore.getCoordinates = [location.value];
+  if (slugLocation.value) {
+    mapStore.getCoordinates = [slugLocation.value];
   }
 });
 </script>
 
 <template>
   <div class="min-h-[30dvh] p-5">
-    <div v-if="status === 'pending'">
+    <div v-if="slugStatus === 'pending'">
       <div class="loading" />
     </div>
     <div v-else-if="error">
@@ -25,14 +29,14 @@ effect(() => {
         </NuxtLink>
       </p>
     </div>
-    <div v-if="location && status !== 'pending'">
+    <div v-if="slugLocation && slugStatus !== 'pending'">
       <h1 class="text-xl font-bold">
-        {{ location?.name }}
+        {{ slugLocation?.name }}
       </h1>
-      <p>{{ location.description }}</p>
+      <p>{{ slugLocation.description }}</p>
     </div>
     <div
-      v-if="!location?.locationLogs.length"
+      v-if="!slugLocation?.locationLogs.length"
       class="mt-4 flex flex-col gap-2"
     >
       <p>

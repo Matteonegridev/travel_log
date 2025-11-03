@@ -4,6 +4,8 @@ import { relations } from "drizzle-orm";
 import { int, real, sqliteTable, text, unique } from "drizzle-orm/sqlite-core";
 import { createSelectSchema } from "drizzle-zod";
 
+import type { SelectLocationLog } from "./location-log";
+
 import { user } from "./auth-schema";
 import { locationLog } from "./location-log";
 
@@ -40,3 +42,9 @@ export const formSchema = createSelectSchema(location, {
 });
 
 export type LocationSchemaValidation = z.infer<typeof formSchema>;
+// get the type of the whole schema:
+export type SelectLocation = typeof location.$inferSelect;
+// add locationLogs from location-log:
+export type SelectLocationWithLogs = SelectLocation & {
+  locationLogs: SelectLocationLog[];
+};
