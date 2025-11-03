@@ -57,8 +57,8 @@ const { selectedPoint } = storeToRefs(mapStore);
           :href="value.href"
           :icon="value.icon"
           :icon-color="selectedPoint?.id === value.id ? 'text-primary' : 'text-base'"
-          @mouseenter="selectedPoint = value"
-          @mouseleave=" selectedPoint = null"
+          @mouseenter="(e: MouseEvent) => selectedPoint = value"
+          @mouseleave="(e: MouseEvent) => selectedPoint = null"
         />
       </div>
       <div class="divider" />

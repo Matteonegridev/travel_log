@@ -6,7 +6,7 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import db from "../../server/database/index"; // your drizzle instance
 import env from "./env";
 
-export type UserWithId = Omit<User, "id"> & {
+export type UserWithIdNumber = Omit<User, "id"> & {
   id: number;
 };
 

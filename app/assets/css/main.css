@@ -4,7 +4,9 @@
 @plugin "daisyui" {
   themes:
     light --default,
-    dark --prefersdark;
+    dark --prefersdark,
+    winter,
+    night;
 }
 
 @layer utilities {

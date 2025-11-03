@@ -5,5 +5,6 @@ export const useLocationStore = defineStore("locationStore", () => {
     location: data,
     refresh,
     status,
+
   };
 });

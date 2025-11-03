@@ -13,7 +13,7 @@ const route = useRoute();
     >
       <NuxtPage />
       <UiMap
-        :class="clsx(route.path === '/dashboard' && 'h-[60dvh]', 'justify-stretch')"
+        :class="clsx(route.path !== '/dashboard/add-location' && 'h-[60dvh]', '')"
       />
     </div>
   </NuxtLayout>

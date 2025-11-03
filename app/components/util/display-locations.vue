@@ -10,7 +10,7 @@ const { selectedPoint } = storeToRefs(mapStore);
 
 <template>
   <div>
-    <NuxkLink
+    <NuxtLink
       :class="clsx(data.id === mapStore.selectedPoint?.id ? 'border-accent' : 'border-transparent',
                    'card card-border bg-base-200 card-md hover:cursor-pointer border-2 transition-all duration-150 ease-in-out')"
       @mouseenter="selectedPoint = data"
@@ -24,6 +24,6 @@ const { selectedPoint } = storeToRefs(mapStore);
         </h2>
         <p>{{ data.description }}</p>
       </div>
-    </NuxkLink>
+    </NuxtLink>
   </div>
 </template>
