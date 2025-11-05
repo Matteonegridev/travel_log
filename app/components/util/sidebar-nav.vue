@@ -21,6 +21,10 @@ const findSlug = computed(() => {
   return sidebarLinks.value.find(l => l.slug === slug) ?? null;
 });
 
+const isLocationRoute = computed(() => route.path.startsWith(`/dashboard/location/`));
+const isDashboard = computed(() => route.path === `/dashboard`);
+const isAddLocationRoute = computed(() => route.path === `/dashboard/add-location`);
+
 onMounted(() => {
   if (status.value !== "pending") {
     setTimeout(() => (showSkeleton.value = false), 300);
@@ -33,9 +37,12 @@ onMounted(() => {
     class="pt-10"
   >
     <ul
-      class="flex flex-col gap-3"
+      class="flex flex-col gap-2"
     >
-      <div v-if="route.path === '/dashboard' || route.path === '/dashboard/add-location'">
+      <div
+        v-if="isDashboard || isAddLocationRoute"
+        class="space-y-2"
+      >
         <UtilSidebarLink
           :is-open="props.isOpen"
           label="Location"
@@ -50,7 +57,10 @@ onMounted(() => {
           icon="tabler:square-plus-2"
         />
       </div>
-      <div v-else>
+      <div
+        v-else
+        class="space-y-2"
+      >
         <UtilSidebarLink
           :is-open="props.isOpen"
           label="Back to Location"
@@ -67,6 +77,7 @@ onMounted(() => {
           />
         </ClientOnly>
       </div>
+      <!-- upper divider -->
       <div
         v-if=" sidebarLinks.length > 0"
         class="divider"
@@ -79,8 +90,12 @@ onMounted(() => {
         v-if="sidebarLinks.length > 0 && !showSkeleton"
         class="flex flex-col gap-2"
       >
-        <!--  -->
-        <div>
+        <!-- Location links -->
+
+        <div
+          v-show="!isLocationRoute"
+          class="space-y-2"
+        >
           <UtilSidebarLink
             v-for="value in sidebarLinks"
             :key="value.id"
@@ -93,7 +108,20 @@ onMounted(() => {
             @mouseleave="(e: MouseEvent) => selectedPoint = null"
           />
         </div>
-        <div class="divider" />
+
+        <div v-if="isLocationRoute">
+          <UtilSidebarLink
+            icon="tabler:edit"
+            :is-open="props.isOpen"
+            label="Edit Location"
+            :href="`/dashboard/location/${route.params.slug}/edit`"
+          />
+        </div>
+
+        <!-- lower divider -->
+        <div
+          class="divider"
+        />
 
         <UtilSidebarLink
           :is-open="props.isOpen"
