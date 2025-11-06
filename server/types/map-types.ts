@@ -9,4 +9,5 @@ export type MapPin = {
 export type Links = {
   href: string;
   icon: string;
+  slug?: string;
 } & MapPin;

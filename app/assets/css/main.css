@@ -2,11 +2,10 @@
 
 /* this is for prefers-scheme-color */
 @plugin "daisyui" {
+  /* themes: light --default, dark --prefersdark, winter, night ; */
   themes:
-    light --default,
-    dark --prefersdark,
-    winter,
-    night;
+    winter --default,
+    night --prefersdark;
 }
 
 @layer utilities {
@@ -16,10 +15,10 @@
   }
 }
 
-html[data-theme="light"] .maplibregl-popup-content {
+html[data-theme="winter"] .maplibregl-popup-content {
   @apply px-5;
 }
-html[data-theme="dark"] {
+html[data-theme="night"] {
   .maplibregl-popup-content {
     @apply text-white bg-gray-700;
   }
