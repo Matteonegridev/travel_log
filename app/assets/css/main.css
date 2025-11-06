@@ -2,6 +2,7 @@
 
 /* this is for prefers-scheme-color */
 @plugin "daisyui" {
+  /* themes: light --default, dark --prefersdark, winter, night ; */
   themes:
     winter --default,
     night --prefersdark;
